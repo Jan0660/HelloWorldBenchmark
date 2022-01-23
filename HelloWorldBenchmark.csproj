@@ -15,7 +15,6 @@
         <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
     </PropertyGroup>
 
-
     <ItemGroup>
         <PackageReference Condition="'$(RuntimeIdentifier)' != '' And '$(NoNativeAOTPublish)' == ''" Include="Microsoft.DotNet.ILCompiler" Version="7.0.0-*" />
     </ItemGroup>

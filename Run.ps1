@@ -1,3 +1,4 @@
+#!/usr/bin/pwsh
 Write-Output "Building..."
 
 # adapted from https://github.com/Jan0660/JanD/commit/cf70500b361b17d13d5ffa4471b2ad6b39ecf5bc#diff-79f18082ea4797a811114b32ec44decc7eebf857ddd36f8b39a355cbefb0e88a
@@ -6,7 +7,8 @@ function Build()
     param(
         [bool] $NativeAOT,
         [string] $Runtime = $null,
-        [bool] $SelfContained
+        [bool] $SelfContained,
+        [bool] $ReadyToRun = $false
     )
     $name = ""
     #    $name = "Benchmark"
@@ -30,13 +32,18 @@ function Build()
     }
     if ($NativeAOT -eq $false -and $SelfContained -eq $true)
     {
-        $cmd += " -p:PublishSingleFile=true --self-contained -p:PublishTrimmed=true";
+        $cmd += " -p:PublishSingleFile=true --self-contained";
         $name += "-contained"
     }
     if ($NativeAOT -eq $false -and $SelfContained -eq $false)
     {
         $cmd += " -p:PublishSingleFile=true --no-self-contained -p:PublishTrimmed=false";
         $name += "-fxdependent"
+    }
+    if ($ReadyToRun)
+    {
+        $cmd += " -p:PublishReadyToRun=true"
+        $name += "-r2r"
     }
     $cmd += " -o bin/bench/$name"
     Write-Output "$( $name ): $cmd"
@@ -49,6 +56,8 @@ function BuildsFor()
     )
     Build -NativeAot $false -Runtime $Runtime -SelfContained $false
     Build -NativeAot $false -Runtime $Runtime -SelfContained $true
+    Build -NativeAot $false -Runtime $Runtime -SelfContained $false -ReadyToRun $true
+    Build -NativeAot $false -Runtime $Runtime -SelfContained $true -ReadyToRun $true
     Build -NativeAot $true -Runtime $Runtime -SelfContained $true
 }
 
