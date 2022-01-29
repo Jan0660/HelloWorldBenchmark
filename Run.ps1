@@ -121,7 +121,7 @@ Write-Output "#### Run Time"
 cat ./bin/bench/report.md
 Write-Output "#### Build Sizes"
 Write-Output "| Name | Size | Ratio |"
-Write-Output "| --- | --- | --- |"
+Write-Output "|:--- | ---:| ---:|"
 foreach ($key in $buildSizes.Keys)
 {
     Write-Output "| ``$key`` | $( $buildSizes[$key] / 1000 )KB | $([math]::Round($( $buildSizes[$key] / $($buildSizes.Values)[0] ), 4)) |"
